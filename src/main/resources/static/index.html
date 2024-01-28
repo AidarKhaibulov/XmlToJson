@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загрузка XML</title>
+</head>
+<body>
+
+<h2>XML to JSON converter</h2>
+
+<input type="file" id="xmlFileInput" />
+<button onclick="uploadXmlFile()">Загрузить XML</button>
+
+<!-- Добавленные элементы для вывода результата -->
+<div id="resultContainer"></div>
+
+<script>
+    function uploadXmlFile() {
+        var fileInput = document.getElementById('xmlFileInput');
+        var file = fileInput.files[0];
+
+        if (!file) {
+            alert('Выберите файл для загрузки.');
+            return;
+        }
+
+        var formData = new FormData();
+        formData.append('file', file);
+
+        fetch('/xml-to-json/upload', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(message => {
+            // Выводим результат в элемент с id="resultContainer"
+            document.getElementById('resultContainer').innerHTML = '<pre>' + message + '</pre>';
+        })
+        .catch(error => {
+            console.error('Ошибка при загрузке файла:', error);
+        });
+    }
+</script>
+
+</body>
+</html>

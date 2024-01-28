@@ -1,0 +1,7 @@
+<root>
+    <nodeA></nodeA>
+    <nodeB>
+        <nodeC></nodeC>
+        <nodeD></nodeD>
+    </nodeB>
+</root>
