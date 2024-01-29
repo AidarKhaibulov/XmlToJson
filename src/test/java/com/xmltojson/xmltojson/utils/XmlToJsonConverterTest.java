@@ -23,20 +23,39 @@ class XmlToJsonConverterTest {
         @SneakyThrows
         @DisplayName("Base scenario")
         void test01() {
-            MockMultipartFile mockFile =createMockMultipartFile("xmlfiles/test1.xml");
+            MockMultipartFile mockFile = createMockMultipartFile("xmlfiles/test1.xml");
 
             JsonNode result = XmlToJsonConverter.convertXmlToJson(mockFile);
 
             ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode expected = objectMapper.readTree("{\"root\":{\"value\":\"20\",\"nodeA\":{\"value\":\"1\"},\"nodeB\":{\"value\":\"15\",\"nodeC\":{\"value\":\"2\"},\"nodeD\":{\"value\":\"3\"}}}}");
+            JsonNode expected = objectMapper.readTree("""
+                    {
+                      "root": {
+                        "value": "20",
+                        "nodeA": {
+                          "value": "1"
+                        },
+                        "nodeB": {
+                          "value": "15",
+                          "nodeC": {
+                            "value": "2"
+                          },
+                          "nodeD": {
+                            "value": "3"
+                          }
+                        }
+                      }
+                    }
+                    """);
 
             assertEquals(expected, result);
         }
+
         @Test
         @SneakyThrows
         @DisplayName("Task example scenario")
-        void test02(){
-            MockMultipartFile mockFile =createMockMultipartFile("xmlfiles/test2.xml");
+        void test02() {
+            MockMultipartFile mockFile = createMockMultipartFile("xmlfiles/test2.xml");
 
             JsonNode result = XmlToJsonConverter.convertXmlToJson(mockFile);
 
@@ -61,12 +80,30 @@ class XmlToJsonConverterTest {
         @SneakyThrows
         @DisplayName("Has no numbers in nodes")
         void test03() {
-            MockMultipartFile mockFile =createMockMultipartFile("xmlfiles/test3.xml");
+            MockMultipartFile mockFile = createMockMultipartFile("xmlfiles/test3.xml");
 
             JsonNode result = XmlToJsonConverter.convertXmlToJson(mockFile);
 
             ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode expected = objectMapper.readTree("{\"root\":{\"value\":\"0\",\"nodeA\":{\"value\":\"0\"},\"nodeB\":{\"value\":\"0\",\"nodeC\":{\"value\":\"0\"},\"nodeD\":{\"value\":\"0\"}}}}");
+            JsonNode expected = objectMapper.readTree("""
+                    {
+                      "root": {
+                        "value": "0",
+                        "nodeA": {
+                          "value": "0"
+                        },
+                        "nodeB": {
+                          "value": "0",
+                          "nodeC": {
+                            "value": "0"
+                          },
+                          "nodeD": {
+                            "value": "0"
+                          }
+                        }
+                      }
+                    }
+                    """);
 
             assertEquals(expected, result);
         }
@@ -75,12 +112,30 @@ class XmlToJsonConverterTest {
         @SneakyThrows
         @DisplayName("Decimal numbers in nodes")
         void test04() {
-            MockMultipartFile mockFile =createMockMultipartFile("xmlfiles/test4.xml");
+            MockMultipartFile mockFile = createMockMultipartFile("xmlfiles/test4.xml");
 
             JsonNode result = XmlToJsonConverter.convertXmlToJson(mockFile);
 
             ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode expected = objectMapper.readTree("{\"root\":{\"value\":\"12\",\"nodeA\":{\"value\":\"1\"},\"nodeB\":{\"value\":\"11\",\"nodeC\":{\"value\":\"0.5\"},\"nodeD\":{\"value\":\"10.5\"}}}}");
+            JsonNode expected = objectMapper.readTree("""
+                    {
+                      "root": {
+                        "value": "12",
+                        "nodeA": {
+                          "value": "1"
+                        },
+                        "nodeB": {
+                          "value": "11",
+                          "nodeC": {
+                            "value": "0.5"
+                          },
+                          "nodeD": {
+                            "value": "10.5"
+                          }
+                        }
+                      }
+                    }
+                    """);
 
             assertEquals(expected, result);
         }
@@ -89,12 +144,80 @@ class XmlToJsonConverterTest {
         @SneakyThrows
         @DisplayName("Extra text")
         void test05() {
-            MockMultipartFile mockFile =createMockMultipartFile("xmlfiles/test5.xml");
+            MockMultipartFile mockFile = createMockMultipartFile("xmlfiles/test5.xml");
 
             JsonNode result = XmlToJsonConverter.convertXmlToJson(mockFile);
 
             ObjectMapper objectMapper = new ObjectMapper();
-            JsonNode expected = objectMapper.readTree("{\"root\":{\"value\":\"28\",\"nodeA\":{\"value\":\"1\"},\"nodeB\":{\"value\":\"14\",\"nodeC\":{\"value\":\"2\"},\"nodeD\":{\"value\":\"3\"},\"nodeE\":{\"value\":\"9\",\"nodeF\":{\"value\":\"4\"},\"nodeG\":{\"value\":\"5\"}}},\"nodeH\":{\"value\":\"13\",\"nodeI\":{\"value\":\"6\"},\"nodeJ\":{\"value\":\"7\"}}}}");
+            JsonNode expected = objectMapper.readTree("""
+                    {
+                      "root": {
+                        "value": "28",
+                        "nodeA": {
+                          "value": "1"
+                        },
+                        "nodeB": {
+                          "value": "14",
+                          "nodeC": {
+                            "value": "2"
+                          },
+                          "nodeD": {
+                            "value": "3"
+                          },
+                          "nodeE": {
+                            "value": "9",
+                            "nodeF": {
+                              "value": "4"
+                            },
+                            "nodeG": {
+                              "value": "5"
+                            }
+                          }
+                        },
+                        "nodeH": {
+                          "value": "13",
+                          "nodeI": {
+                            "value": "6"
+                          },
+                          "nodeJ": {
+                            "value": "7"
+                          }
+                        }
+                      }
+                    }
+                    """);
+
+            assertEquals(expected, result);
+        }
+
+        @Test
+        @SneakyThrows
+        @DisplayName("Negative numbers in nodes")
+        void test06() {
+            MockMultipartFile mockFile = createMockMultipartFile("xmlfiles/test6.xml");
+
+            JsonNode result = XmlToJsonConverter.convertXmlToJson(mockFile);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode expected = objectMapper.readTree("""
+                    {
+                      "root": {
+                        "value": "7",
+                        "nodeA": {
+                          "value": "1"
+                        },
+                        "nodeB": {
+                          "value": "10",
+                          "nodeC": {
+                            "value": "2"
+                          },
+                          "nodeD": {
+                            "value": "-2"
+                          }
+                        }
+                      }
+                    }
+                    """);
 
             assertEquals(expected, result);
         }
